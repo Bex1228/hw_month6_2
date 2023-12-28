@@ -27,7 +27,6 @@ class CharacterActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityCharacterBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        setupCharactersRecycler()
 
         viewModel.getCharacters().observe(this) {result->
             when(result){

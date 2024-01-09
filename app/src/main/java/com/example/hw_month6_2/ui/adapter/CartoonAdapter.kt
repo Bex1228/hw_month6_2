@@ -2,9 +2,7 @@ package com.example.hw_month6_2.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.ListAdapter
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.bumptech.glide.Glide
 import com.example.hw_month6_2.R
@@ -53,7 +51,6 @@ class CartoonAdapter(
 
 class CartoonDiffCallback : DiffUtil.ItemCallback<Character>() {
     override fun areItemsTheSame(oldItem: Character, newItem: Character): Boolean = oldItem.id == newItem.id
-
 
     override fun areContentsTheSame(oldItem: Character, newItem: Character): Boolean = oldItem.id == newItem.id
 }

@@ -1,16 +1,16 @@
 package com.example.hw_month6_2.ui.characterDetails
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.example.hw_month6_2.R
 import com.example.hw_month6_2.data.Character
 import com.example.hw_month6_2.databinding.ActivityCharacterDetailsBinding
+import com.example.hw_month6_2.ui.base.BaseActivity
 import com.example.hw_month6_2.ui.utils.CartoonKeys
 import com.example.hw_month6_2.ui.utils.Indicator
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class CharacterDetailsActivity : AppCompatActivity() {
+class CharacterDetailsActivity : BaseActivity() {
     private lateinit var binding: ActivityCharacterDetailsBinding
     private val viewModel by viewModel<CharacterDetailsViewModel>()
 
@@ -21,11 +21,11 @@ class CharacterDetailsActivity : AppCompatActivity() {
 
         val activityId = intent.getIntExtra(CartoonKeys.CHARACTER_ID_ARG, 0)
 
-        viewModel.getCharacterDetails(activityId).observe(this) { resource ->
-            resource.data?.let { character ->
-                setupCharacterData(character)
+        viewModel.getCharacterDetails(activityId).stateHandler(
+            success = {
+                setupCharacterData(it)
             }
-        }
+        )
     }
 
     private fun setupCharacterData(receiveData: Character) {

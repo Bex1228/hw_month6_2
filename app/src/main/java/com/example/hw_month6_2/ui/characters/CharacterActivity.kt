@@ -2,18 +2,17 @@ package com.example.hw_month6_2.ui.characters
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.hw_month6_2.data.Resource
 import com.example.hw_month6_2.databinding.ActivityCharacterBinding
 import com.example.hw_month6_2.ui.adapter.CartoonAdapter
+import com.example.hw_month6_2.ui.base.BaseActivity
 import com.example.hw_month6_2.ui.characterDetails.CharacterDetailsActivity
 import com.example.hw_month6_2.ui.utils.CartoonKeys
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class CharacterActivity : AppCompatActivity() {
+class CharacterActivity : BaseActivity() {
 
     private lateinit var binding: ActivityCharacterBinding
 
@@ -25,23 +24,16 @@ class CharacterActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityCharacterBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        setupCharactersRecycler()
 
-        viewModel.getCharacters().observe(this) {result->
-            when(result){
-                is Resource.Error -> {
-                    Toast.makeText(this,result.message,Toast.LENGTH_SHORT).show()
-                    binding.progressBar.isVisible = false
-                }
-                is Resource.Loading -> {
-                    binding.progressBar.isVisible = true
-                }
-                is Resource.Success -> {
-                    cartoonAdapter.submitList(result.data)
-                    binding.progressBar.isVisible = false
-                }
+        viewModel.getCharacters().stateHandler(
+            success = {
+                cartoonAdapter.submitList(it)
+            },
+            state = { state ->
+                binding.progressBar.isVisible = state is Resource.Loading
             }
-            setupCharactersRecycler()
-        }
+        )
     }
 
     private fun setupCharactersRecycler() = with(binding.recyclerView) {
